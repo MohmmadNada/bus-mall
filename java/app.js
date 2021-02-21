@@ -73,11 +73,11 @@ function renderThreeImages() {
         middleImageItem.src = Items.allItems[MiddleImageIndex].source;
         rightImageItem.src = Items.allItems[RightImageIndex].source;
         leftImageItem.src = Items.allItems[leftImageIndex].source;
-
     }
 }
 randomImgByIndex();
 renderThreeImages();
+console.log(Items.allItems);
 // we need to add event when we click on image
 // from var contain id 
 leftImageItem.addEventListener('click', handleUserClick);
@@ -89,22 +89,36 @@ rightImageItem.addEventListener('click', handleUserClick);
 function handleUserClick(event) {
     userAttempts++;
 
-    // give it 25 to click and after show result 
     if (userAttempts < maxAttempts) {
-        // add void 
+        // add void , we will put click img
         if (event.target.id === 'left_image') {
             Items.allItems[leftImageIndex].votes++;
 
         } else if (event.target.id === 'middle_image') {
             Items.allItems[MiddleImageIndex].votes++;
 
-        } else {
+        } else if (event.target.id === 'right_image') {
 
-            Items.allItems[leftImageIndex].votes++;
+            Items.allItems[RightImageIndex].votes++;
         }
+        renderThreeImages();
     } else {
-        // will be work after 25 attemps, show the result 
-        let list = document.getElementById('result_list');
+        //in this case will ended attemps , so the result will show 
+        let listItems = document.getElementById('result_list');
+        //for the images result , use list , for because it 20
+        let getResult;
+        for (let i = 0; i < Items.allItems.length; i++) {
+            getResult = document.createElement('li');
+            listItems.appendChild(getResult);
+            //it will get a neame in li 
+            getResult.textContent = Items.allItems[i].name + ' has ' + Items.allItems[i].votes + ' votes '
+        }
+        leftImageItem.removeEventListener('click', handleUserClick);
+        middleImageItem.removeEventListener('click', handleUserClick);
+        rightImageItem.removeEventListener('click', handleUserClick);
+
+
 
     }
+
 }
