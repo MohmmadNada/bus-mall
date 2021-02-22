@@ -12,7 +12,7 @@ let leftImageItem = document.getElementById('left_image');
 let middleImageItem = document.getElementById('middle_image');
 let rightImageItem = document.getElementById('right_image');
 let container = document.getElementById('images_div'); // ths var for 3 img , because we need add enent if the use click for any one 
-let maxAttempts = 5;
+let maxAttempts = 25;
 let userAttempts = 0;
 let RightImageIndex;
 let MiddleImageIndex;
@@ -20,13 +20,7 @@ let leftImageIndex;
 let allItemsName = []; //this for chart label
 let ItemsVotes = []; //this for chart 
 let ItemsShow = []; //this for chart 
-let lastSrc1;
-let lastSrc2;
-let lastSrc3;
-let newSrc1;
-let newSrc2;
-let newSrc3;
-
+let duplicateCheck = [];
 // it will go with id 
 function Items(name, source) {
     this.name = name;
@@ -66,7 +60,6 @@ function randomImgByIndex() {
 }
 //console.log(Math.floor(Math.random() * Items.allItems.length));
 
-
 function renderThreeImages() {
     leftImageIndex = randomImgByIndex();
     ItemsShow.push(Items.allItems[leftImageIndex].shows++)
@@ -76,40 +69,58 @@ function renderThreeImages() {
         // in this case the code will     let leftImageIndex = randomImgByIndex();
 
     // after that run do , after that check while if it is true will run do again and check 
-    do {
+    //this for check repeat images
 
-        RightImageIndex = randomImgByIndex(); // votes
-        lastSrc1 = Items.allItems[RightImageIndex].source;
-
-        ItemsShow.push(Items.allItems[RightImageIndex].shows++);
-        //            ItemsVotes.push(Items.allItems[i].votes);
-
-        MiddleImageIndex = randomImgByIndex();
-        ItemsShow.push(Items.allItems[MiddleImageIndex].shows++)
-
-    }
-    while (MiddleImageIndex === RightImageIndex || leftImageIndex === RightImageIndex || leftImageIndex === MiddleImageIndex) {
-        lastSrc1 = Items.allItems[MiddleImageIndex].source;
-        middleImageItem.src = Items.allItems[MiddleImageIndex].source;
-
-
-        lastSrc2 = Items.allItems[MiddleImageIndex].source;
-
-        rightImageItem.src = Items.allItems[RightImageIndex].source;
-        lastSrc3 = Items.allItems[MiddleImageIndex].source;
-
-        leftImageItem.src = Items.allItems[leftImageIndex].source;
-
-    }
 }
+do {
+
+    RightImageIndex = randomImgByIndex(); // votes
+    ItemsShow.push(Items.allItems[RightImageIndex].shows++);
+    //            ItemsVotes.push(Items.allItems[i].votes);
+    MiddleImageIndex = randomImgByIndex();
+    leftImageIndex = randomImgByIndex();
+
+    ItemsShow.push(Items.allItems[MiddleImageIndex].shows++);
+
+}
+while (MiddleImageIndex === RightImageIndex || leftImageIndex === RightImageIndex || leftImageIndex === MiddleImageIndex) {
+
+
+    middleImageItem.src = Items.allItems[MiddleImageIndex].source;
+    rightImageItem.src = Items.allItems[RightImageIndex].source;
+    leftImageItem.src = Items.allItems[leftImageIndex].source;
+
+
+}
+duplicateCheck.push(RightImageIndex);
+duplicateCheck.push(leftImageIndex);
+duplicateCheck.push(MiddleImageIndex);
+
 randomImgByIndex();
+
 // we need to add event when we click on image
 // from var contain id 
 container.addEventListener('click', handleUserClick);
 // the fun for click 
 userAttempts = 0;
+//this code for remove first 3 items in duplicate arrays 
+
+console.log(duplicateCheck);
+
 
 function handleUserClick(event) {
+    duplicateCheck.push(RightImageIndex);
+
+    duplicateCheck.push(leftImageIndex);
+
+    duplicateCheck.push(MiddleImageIndex);
+
+    // if (duplicateCheck.length == 6) {
+    //     duplicateCheck.shift();
+    //     duplicateCheck.shift();
+    //     duplicateCheck.shift();
+    // }
+
     if (userAttempts < maxAttempts) {
         userAttempts++;
 
@@ -122,6 +133,8 @@ function handleUserClick(event) {
             Items.allItems[RightImageIndex].votes++;
         }
         renderThreeImages();
+
+
     }
     if (userAttempts == maxAttempts) {
         // //in this case will ended attemps , so the result will show 
@@ -145,13 +158,6 @@ function handleUserClick(event) {
 }
 
 renderThreeImages();
-newSrc1 = Items.allItems[RightImageIndex].source;
-
-newSrc2 = lastSrc2;
-newSrc3 = lastSrc3;
-
-console.log(newSrc1);
-console.log(lastSrc1);
 
 /* lab 12 */
 function viewChart() {
