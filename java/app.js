@@ -10,7 +10,7 @@ Times the image has been shown*/
 let leftImageItem = document.getElementById('left_image');
 let middleImageItem = document.getElementById('middle_image');
 let rightImageItem = document.getElementById('right_image');
-let maxAttempts = 5;
+let maxAttempts = 25;
 let userAttempts = 0;
 let RightImageIndex;
 let MiddleImageIndex;
@@ -18,7 +18,7 @@ let leftImageIndex;
 let votesArray = [];
 let itemsName = [];
 let showArray = [];
-let PreviousImages = [];
+let previousImages = [];
 
 // it will go with id
 function Items(name, source) {
@@ -88,7 +88,7 @@ function renderThreeImages() {
             RightImageIndex = randomImgByIndex();
 
         } while (MiddleImageIndex === RightImageIndex || leftImageIndex === RightImageIndex || leftImageIndex === MiddleImageIndex)
-    } while (PreviousImages.includes(leftImageIndex) || PreviousImages.includes(MiddleImageIndex) || PreviousImages.includes(RightImageIndex))
+    } while (previousImages.includes(leftImageIndex) || previousImages.includes(MiddleImageIndex) || previousImages.includes(RightImageIndex))
 
     middleImageItem.src = Items.allItems[MiddleImageIndex].source;
     rightImageItem.src = Items.allItems[RightImageIndex].source;
@@ -96,10 +96,10 @@ function renderThreeImages() {
     Items.allItems[MiddleImageIndex].shows++;
     Items.allItems[RightImageIndex].shows++;
     Items.allItems[leftImageIndex].shows++;
-    PreviousImages = [];
-    PreviousImages.push(leftImageIndex);
-    PreviousImages.push(MiddleImageIndex);
-    PreviousImages.push(RightImageIndex);
+    previousImages = [];
+    previousImages.push(RightImageIndex);
+    previousImages.push(leftImageIndex);
+    previousImages.push(MiddleImageIndex);
 
 
 }
